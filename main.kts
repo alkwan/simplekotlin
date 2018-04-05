@@ -1,16 +1,79 @@
 // Explore a simple class
-
 println("UW Homework: Simple Kotlin")
 
 // write a "whenFn" that takes an arg of type "Any" and returns a String
+fun whenFn(arg: Any): String {
+    when(arg) {
+        "Hello" -> return "world"
+        0 -> return "zero"
+        1 -> return "one"
+        in 2..10 -> return "low number"
+        is String -> return "I don't understand"
+        is Int -> return "a number"
+        else -> {
+            return "I don't understand"
+        }
+    }
+}
 
 // write an "add" function that takes two Ints, returns an Int, and adds the values
+fun add(a: Int, b: Int): Int {
+    return a + b
+}
+
 // write a "sub" function that takes two Ints, returns an Int, and subtracts the values
+fun sub(a: Int, b: Int): Int {
+    return a - b
+}
+
 // write a "mathOp" function that takes two Ints and a function (that takes two Ints and returns an Int), returns an Int, and applies the passed-in-function to the arguments
+fun mathOp(a: Int, b: Int, op: (Int, Int) -> Int): Int {
+    return op(a, b)
+}
 
 // write a class "Person" with first name, last name and age
+class Person(var firstName: String, val lastName: String, var age: Int) {
+    val debugString = "[Person firstName:${firstName} lastName:${lastName} age:${age}]"
+}
 
 // write a class "Money"
+class Money(val amount: Int, val currency: String = "USD") {
+    fun convert(newCurrency: String): Int {
+        when (this.currency) {
+            "USD" -> when (newCurrency) {
+                "EUR" -> return (this.amount * 0.67).toInt()
+                "GBP" -> return this.amount / 2
+                "CAN" -> return (this.amount * 0.8).toInt()
+            }
+            "EUR" -> when (newCurrency) {
+                "USD" -> return (this.amount * 1.5).toInt()
+                "GBP" -> return this.amount / 3
+                "CAN" -> return (this.amount * 1.2).toInt()
+            }
+            "GBP" -> when(newCurrency) {
+                "USD" -> return this.amount * 2
+                "CAN" -> return (this.amount * 2.5).toInt()
+                "EUR" -> return this.amount * 3
+            }
+            "CAN" -> when(newCurrency) {
+                "USD" -> return (this.amount / 1.25).toInt()
+                "EUR" -> return (this.amount * 0.83).toInt()
+                "GBP" -> return (this.amount / 2.5).toInt()
+            }
+        }
+        return 0
+    }
+
+    operator fun plus(other: Money): Money {
+        if (this.currency != other.currency) {
+            val conversion = other.convert(this.currency)
+            return Money(this.amount + conversion, this.currency)
+        } else {
+            return Money(this.amount + other.amount, this.currency)
+        }
+    }
+        
+}
 
 // ============ DO NOT EDIT BELOW THIS LINE =============
 
@@ -32,13 +95,13 @@ println("")
 
 print("Add tests: ")
 val add_tests = listOf(
-    Pair(0, 0) to 0,
-    Pair(1, 2) to 3,
-    Pair(-2, 2) to 0,
-    Pair(123, 456) to 579
+   Pair(0, 0) to 0,
+   Pair(1, 2) to 3,
+   Pair(-2, 2) to 0,
+   Pair(123, 456) to 579
 )
 for ( (k,v) in add_tests) {
-    print(if (add(k.first, k.second) == v) "." else "!")
+   print(if (add(k.first, k.second) == v) "." else "!")
 }
 println("")
 
